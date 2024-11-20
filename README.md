@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 RetailPulse
 ------------------------------------------------
 
@@ -16,3 +17,6 @@ An all-in-one solution for managing e-commerce operations. Designed to streamlin
 
 **Server:** Java SpringBoot
 
+=======
+# RetailPulse
+>>>>>>> 3efcb72790e7a7eb45f926b1bd155fffe0596df9
