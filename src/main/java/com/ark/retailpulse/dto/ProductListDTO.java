@@ -1,24 +1,27 @@
 package com.ark.retailpulse.dto;
 
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
-public class ProductDTO {
+@AllArgsConstructor
+public class ProductListDTO {
+
     private Long id;
-    @NotBlank(message = "Product name is required")
+    @NotBlank(message = "cannot be empty")
     private String name;
-    @NotBlank(message = "Product description is required")
+    @NotBlank(message = "cannot be empty")
     private String description;
-    @Positive(message = "Cannot be negative")
+    @Positive(message = "only positive")
     private BigDecimal price;
-    @PositiveOrZero(message = "Cannot be negative")
+    @PositiveOrZero(message = "quantity must be positive or zero")
     private Integer quantity;
-    private String image; //add image
-    private List<CommentDTO> comments;
+    private String image;
+
 }
