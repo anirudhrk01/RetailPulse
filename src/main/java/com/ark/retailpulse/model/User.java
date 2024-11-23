@@ -18,26 +18,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="users")
-
-public class User implements UserDetails { //spring security corre
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "email cannot be null")
+    @NotBlank
     @Email
     private String email;
-    @NotBlank(message = "password cannot be blank")
+    @NotBlank
+
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
+
+//    private boolean emailConfirmation;
+//    private String confirmationCode;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE"+role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
     }
 
     @Override
@@ -66,6 +69,6 @@ public class User implements UserDetails { //spring security corre
     }
 
     public enum Role{
-        USER,ADMIN;
+        USER, ADMIN
     }
 }
