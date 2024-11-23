@@ -13,17 +13,17 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product{
-
+public class Product {
     @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private String image;
-    @OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
-    private List<Comment> comments= new ArrayList<>();
+    private String image; //add image
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
 }
