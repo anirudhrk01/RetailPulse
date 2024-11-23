@@ -9,5 +9,4 @@ public class CartItemDTO {
     private Long productId;
     @Positive
     private Integer quantity;
-
 }
