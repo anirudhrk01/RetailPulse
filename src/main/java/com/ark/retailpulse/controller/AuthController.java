@@ -1,7 +1,9 @@
 package com.ark.retailpulse.controller;
 
 import com.ark.retailpulse.dto.ChangePasswordRequest;
+import com.ark.retailpulse.dto.EmailConfirmationRequest;
 import com.ark.retailpulse.dto.LoginRequest;
+import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.service.JwtService;
 import com.ark.retailpulse.service.UserService;
 import com.ark.retailpulse.model.User;
@@ -9,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +54,18 @@ public class AuthController {
         userService.changePassword(email ,request);
         return ResponseEntity.ok().body("password changed");
 
+    }
+    @PostMapping("/confirm-email")
+    public ResponseEntity<?> confirmEmail(@RequestBody EmailConfirmationRequest request){
+        try{
+                userService.confirmEmail(request.getEmail(), request.getConfirmationCode());
+                return ResponseEntity.ok().body("Email confirmed successfully");
+        }catch (BadCredentialsException e){
+            return ResponseEntity.badRequest().body("Invalid code .");
+        }
+        catch (ResourceNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

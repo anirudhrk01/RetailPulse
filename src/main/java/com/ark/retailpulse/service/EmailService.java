@@ -1,6 +1,7 @@
 package com.ark.retailpulse.service;
 
 import com.ark.retailpulse.model.Order;
+import com.ark.retailpulse.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +23,16 @@ public class EmailService {
         message.setSubject("Order confirmation");
         message.setText("Your order has been confirmed. Order ID " + order.getId());
         mailSender.send(message);
+    }
+
+    public void sendConfirmationCode(User user){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(user.getEmail());
+        message.setSubject("Confirm your email");
+        message.setText("Please confirm your email by entering this security code" + user.getConfirmationCode());
+        mailSender.send(message);
+
     }
 
 
