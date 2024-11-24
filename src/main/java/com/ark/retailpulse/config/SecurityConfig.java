@@ -34,13 +34,19 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth-> auth
+                        // Permit Swagger UI endpoints
+                        // ("http://localhost:8080/swagger-ui/index.html")
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+
+                        // Permit public endpoints
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/index.html").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                        .requestMatchers("/api/auth/change-password").authenticated()
 
+                        // Secure other endpoints
+                        .requestMatchers("/api/auth/change-password").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
