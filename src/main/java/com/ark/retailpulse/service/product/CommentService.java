@@ -1,6 +1,6 @@
-package com.ark.retailpulse.service;
+package com.ark.retailpulse.service.product;
 
-import com.ark.retailpulse.dto.CommentDTO;
+import com.ark.retailpulse.dto.product.CommentDTO;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.mapper.CommentMapper;
 import com.ark.retailpulse.model.Comment;

@@ -1,4 +1,4 @@
-package com.ark.retailpulse.service;
+package com.ark.retailpulse.service.auth;
 
 import com.ark.retailpulse.model.Order;
 import com.ark.retailpulse.model.User;

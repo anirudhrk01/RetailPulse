@@ -1,8 +1,8 @@
-package com.ark.retailpulse.controller;
+package com.ark.retailpulse.controller.product;
 
-import com.ark.retailpulse.dto.CommentDTO;
+import com.ark.retailpulse.dto.product.CommentDTO;
 import com.ark.retailpulse.model.User;
-import com.ark.retailpulse.service.CommentService;
+import com.ark.retailpulse.service.product.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

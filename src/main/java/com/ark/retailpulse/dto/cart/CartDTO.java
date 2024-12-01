@@ -1,4 +1,4 @@
-package com.ark.retailpulse.dto;
+package com.ark.retailpulse.dto.cart;
 
 import lombok.Data;
 

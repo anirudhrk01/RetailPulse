@@ -1,8 +1,8 @@
-package com.ark.retailpulse.controller;
+package com.ark.retailpulse.controller.order;
 
-import com.ark.retailpulse.dto.CartDTO;
+import com.ark.retailpulse.dto.cart.CartDTO;
 import com.ark.retailpulse.model.User;
-import com.ark.retailpulse.service.CartService;
+import com.ark.retailpulse.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

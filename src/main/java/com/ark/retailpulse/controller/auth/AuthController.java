@@ -1,12 +1,12 @@
-package com.ark.retailpulse.controller;
+package com.ark.retailpulse.controller.auth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ark.retailpulse.dto.ChangePasswordRequest;
-import com.ark.retailpulse.dto.EmailConfirmationRequest;
-import com.ark.retailpulse.dto.LoginRequest;
+import com.ark.retailpulse.dto.auth.ChangePasswordRequest;
+import com.ark.retailpulse.dto.auth.EmailConfirmationRequest;
+import com.ark.retailpulse.dto.auth.LoginRequest;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
-import com.ark.retailpulse.service.UserService;
+import com.ark.retailpulse.service.user.UserService;
 import com.ark.retailpulse.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

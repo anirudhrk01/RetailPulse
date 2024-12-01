@@ -1,9 +1,10 @@
-package com.ark.retailpulse.service;
+package com.ark.retailpulse.service.user;
 
-import com.ark.retailpulse.dto.ChangePasswordRequest;
+import com.ark.retailpulse.dto.auth.ChangePasswordRequest;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.model.User;
 import com.ark.retailpulse.repository.UserRepository;
+import com.ark.retailpulse.service.auth.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;

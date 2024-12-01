@@ -1,4 +1,4 @@
-package com.ark.retailpulse.dto;
+package com.ark.retailpulse.dto.cart;
 
 import jakarta.validation.constraints.Positive;
 import lombok.Data;

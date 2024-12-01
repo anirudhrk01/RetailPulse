@@ -1,7 +1,7 @@
-package com.ark.retailpulse.service;
+package com.ark.retailpulse.service.order;
 
-import com.ark.retailpulse.dto.CartDTO;
-import com.ark.retailpulse.dto.OrderDTO;
+import com.ark.retailpulse.dto.cart.CartDTO;
+import com.ark.retailpulse.dto.order.OrderDTO;
 import com.ark.retailpulse.exception.InsufficientStockException;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.mapper.CartMapper;
@@ -10,6 +10,8 @@ import com.ark.retailpulse.model.*;
 import com.ark.retailpulse.repository.OrderRepository;
 import com.ark.retailpulse.repository.ProductRepository;
 import com.ark.retailpulse.repository.UserRepository;
+import com.ark.retailpulse.service.auth.EmailService;
+import com.ark.retailpulse.service.cart.CartService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

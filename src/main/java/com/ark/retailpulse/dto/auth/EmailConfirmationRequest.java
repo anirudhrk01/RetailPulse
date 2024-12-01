@@ -1,8 +1,6 @@
-package com.ark.retailpulse.dto;
+package com.ark.retailpulse.dto.auth;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Data
 public class EmailConfirmationRequest {

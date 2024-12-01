@@ -1,6 +1,6 @@
-package com.ark.retailpulse.service;
+package com.ark.retailpulse.service.cart;
 
-import com.ark.retailpulse.dto.CartDTO;
+import com.ark.retailpulse.dto.cart.CartDTO;
 import com.ark.retailpulse.exception.InsufficientStockException;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.mapper.CartMapper;

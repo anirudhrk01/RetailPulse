@@ -1,7 +1,7 @@
 package com.ark.retailpulse.mapper;
 
-import com.ark.retailpulse.dto.OrderDTO;
-import com.ark.retailpulse.dto.OrderItemDTO;
+import com.ark.retailpulse.dto.order.OrderDTO;
+import com.ark.retailpulse.dto.order.OrderItemDTO;
 import com.ark.retailpulse.model.Order;
 import com.ark.retailpulse.model.OrderItem;
 import org.mapstruct.Mapper;

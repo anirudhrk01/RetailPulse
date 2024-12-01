@@ -1,6 +1,5 @@
-package com.ark.retailpulse.dto;
+package com.ark.retailpulse.dto.product;
 
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;

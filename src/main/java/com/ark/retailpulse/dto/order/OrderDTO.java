@@ -1,4 +1,4 @@
-package com.ark.retailpulse.dto;
+package com.ark.retailpulse.dto.order;
 
 import com.ark.retailpulse.model.Order;
 import jakarta.validation.constraints.NotBlank;

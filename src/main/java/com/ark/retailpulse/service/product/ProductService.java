@@ -1,7 +1,7 @@
-package com.ark.retailpulse.service;
+package com.ark.retailpulse.service.product;
 
-import com.ark.retailpulse.dto.ProductDTO;
-import com.ark.retailpulse.dto.ProductListDTO;
+import com.ark.retailpulse.dto.product.ProductDTO;
+import com.ark.retailpulse.dto.product.ProductListDTO;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.mapper.ProductMapper;
 import com.ark.retailpulse.model.Product;
@@ -13,12 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.UUID;
 
 @Service

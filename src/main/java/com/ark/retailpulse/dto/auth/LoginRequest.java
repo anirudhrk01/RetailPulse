@@ -1,4 +1,4 @@
-package com.ark.retailpulse.dto;
+package com.ark.retailpulse.dto.auth;
 
 
 import lombok.AllArgsConstructor;
