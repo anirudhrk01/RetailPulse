@@ -3,6 +3,7 @@ package com.ark.retailpulse.service.sms;
 import com.ark.retailpulse.model.Otp;
 import com.ark.retailpulse.model.User;
 import com.ark.retailpulse.repository.OtpRepository;
+import com.ark.retailpulse.util.CodeGeneratorUtil;
 import com.twilio.Twilio;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.api.v2010.account.Message;
@@ -24,6 +25,7 @@ import java.util.Random;
 public class TwilioOtpService {
     private static final Logger logger = LoggerFactory.getLogger(TwilioOtpService.class);
     private final OtpRepository otpRepository;
+    private final CodeGeneratorUtil codeGeneratorUtil;
 
     @Value("${twilio.accountSid}")
     private String accountSid;
@@ -49,7 +51,7 @@ public class TwilioOtpService {
         existingOtp.ifPresent(otpRepository::delete);
 
         // Generate a new OTP
-        String otpCode = generateOtp();
+        String otpCode = codeGeneratorUtil.generateConfirmationCode();
         logger.info("Generated sms OTP: {}", otpCode);
 
         // Save new OTP
@@ -66,7 +68,9 @@ public class TwilioOtpService {
 //                    new PhoneNumber(user.getPhoneNumber()),
 //                    new PhoneNumber(fromPhoneNumber),
 //                    "Your OTP code is: " + otpCode
-//            ).create(); //todo:  uncomment for demo purpose
+//            ).create();
+//todo:  uncomment for demo purpose
+
 
         } catch (ApiException ex) {
             throw new RuntimeException("Failed to send OTP via Twilio: " + ex.getMessage());
@@ -91,10 +95,7 @@ public class TwilioOtpService {
         return true;
     }
 
-    private String generateOtp() {
-        Random random = new Random();
-        return String.valueOf(100000 + random.nextInt(900000));
-    }
+
     private boolean isValidPhoneNumber(String phoneNumber) {
         return phoneNumber.matches("\\+?[0-9]{10,15}");
     }
