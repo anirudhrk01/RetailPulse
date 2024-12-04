@@ -5,22 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItem {
+public class Otp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String phoneNumber;
+
+    private String otpCode;
+
+    private LocalDateTime expirationTime;
+
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
-
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="product_id", nullable = false)
-    private Product product;
-
-    private Integer quantity;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

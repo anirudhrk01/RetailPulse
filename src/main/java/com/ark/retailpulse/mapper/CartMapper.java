@@ -1,8 +1,8 @@
 package com.ark.retailpulse.mapper;
 
 
-import com.ark.retailpulse.dto.CartDTO;
-import com.ark.retailpulse.dto.CartItemDTO;
+import com.ark.retailpulse.dto.cart.CartDTO;
+import com.ark.retailpulse.dto.cart.CartItemDTO;
 import com.ark.retailpulse.model.Cart;
 import com.ark.retailpulse.model.CartItem;
 import org.mapstruct.Mapper;
