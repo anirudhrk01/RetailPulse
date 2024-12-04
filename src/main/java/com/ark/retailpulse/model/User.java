@@ -1,8 +1,10 @@
 package com.ark.retailpulse.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,11 +24,13 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     @Email
     private String email;
-    @NotBlank
 
+
+    @NotBlank
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -35,7 +39,12 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
-    private boolean emailConfirmation;
+    @NotBlank
+    @Pattern( regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Phone number must be valid (e.g., +1234567890 or 1234567890)")
+    private String phoneNumber;
+
+    private boolean emailConfirmation=false;
+    private Boolean phoneConfirmation = false;
     private String confirmationCode;
 
     @Override
@@ -65,7 +74,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return emailConfirmation || phoneConfirmation;
     }
 
     public enum Role{

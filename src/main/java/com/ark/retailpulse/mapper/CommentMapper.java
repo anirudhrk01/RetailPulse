@@ -1,7 +1,7 @@
 package com.ark.retailpulse.mapper;
 
 
-import com.ark.retailpulse.dto.CommentDTO;
+import com.ark.retailpulse.dto.product.CommentDTO;
 import com.ark.retailpulse.model.Comment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
