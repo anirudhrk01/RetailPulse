@@ -4,6 +4,7 @@ import com.ark.retailpulse.dto.ApiResponse;
 import com.ark.retailpulse.dto.auth.ChangePasswordRequest;
 import com.ark.retailpulse.dto.auth.EmailConfirmationRequest;
 import com.ark.retailpulse.dto.auth.LoginRequest;
+import com.ark.retailpulse.dto.auth.SmsConfirmationRequest;
 import com.ark.retailpulse.model.User;
 import com.ark.retailpulse.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,18 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
 
+    @PostMapping("/confirm-email")
+    public ResponseEntity<?> confirmEmail(@Valid @RequestBody EmailConfirmationRequest request) {
+        authService.confirmEmail(request);
+        return ResponseEntity.ok(new ApiResponse("Email confirmed", HttpStatus.OK.value()));
+    }
+
+    @PostMapping("/confirm-phone")
+    public ResponseEntity<?> confirmPhone(@Valid @RequestParam SmsConfirmationRequest request) {  //todo : SmsConfirmationRequest as above
+        authService.confirmPhone(request);
+        return ResponseEntity.ok(new ApiResponse("Phone number confirmed", HttpStatus.OK.value()));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
         authService.login(loginRequest, request, response);
@@ -45,15 +58,6 @@ public class AuthController {
         return ResponseEntity.ok(new ApiResponse("Password changed successfully", HttpStatus.OK.value()));
     }
 
-    @PostMapping("/confirm-phone")
-    public ResponseEntity<?> confirmPhone(@RequestParam String phoneNumber, @RequestParam String otpCode) {
-        authService.confirmPhone(phoneNumber, otpCode);
-        return ResponseEntity.ok(new ApiResponse("Phone number confirmed", HttpStatus.OK.value()));
-    }
 
-    @PostMapping("/confirm-email")
-    public ResponseEntity<?> confirmEmail(@RequestBody EmailConfirmationRequest request) {
-        authService.confirmEmail(request);
-        return ResponseEntity.ok(new ApiResponse("Email confirmed", HttpStatus.OK.value()));
-    }
+
 }

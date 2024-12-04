@@ -3,6 +3,7 @@ package com.ark.retailpulse.service.auth;
 import com.ark.retailpulse.dto.auth.ChangePasswordRequest;
 import com.ark.retailpulse.dto.auth.EmailConfirmationRequest;
 import com.ark.retailpulse.dto.auth.LoginRequest;
+import com.ark.retailpulse.dto.auth.SmsConfirmationRequest;
 import com.ark.retailpulse.service.sms.TwilioOtpService;
 import com.ark.retailpulse.service.user.UserService;
 import com.ark.retailpulse.model.User;
@@ -30,6 +31,14 @@ public class AuthService {
 
     public User register(User user) {
         return userService.registerUser(user);
+    }
+
+    public void confirmEmail(EmailConfirmationRequest request) {
+        userService.confirmEmail(request.getEmail(), request.getConfirmationCode());
+    }
+
+    public void confirmPhone(SmsConfirmationRequest request) {    //todo:  SMSconfirmation Request as like EmailConfirmation Request  [FINISHED]
+        userService.confirmPhoneNumber(request.getPhoneNumber(), request.getOtpCode());
     }
 
     public void login(LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
@@ -64,11 +73,7 @@ public class AuthService {
         userService.changePassword(email, request);
     }
 
-    public void confirmPhone(String phoneNumber, String otpCode) {
-        userService.confirmPhoneNumber(phoneNumber, otpCode);
-    }
 
-    public void confirmEmail(EmailConfirmationRequest request) {
-        userService.confirmEmail(request.getEmail(), request.getConfirmationCode());
-    }
+
+
 }

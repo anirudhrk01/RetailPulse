@@ -49,8 +49,33 @@ public class UserService {
          return savedUser;
     }
 
+
     public User getUserByEmail(String email){
             return userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+    }
+
+    public void confirmEmail(String email, String confirmationCode){
+        User user = getUserByEmail(email);
+
+        if(user.getConfirmationCode().equals(confirmationCode)){
+            user.setEmailConfirmation(true);
+            user.setConfirmationCode(null);
+            userRepository.save(user);
+        }
+        else{
+            throw new InvalidConfirmationCodeException("confirmation code is incorrect");
+        }
+    }
+
+    public void confirmPhoneNumber(String phoneNumber, String confirmationCode) {
+        boolean isValid = twilioOtpService.validateOtp(phoneNumber, confirmationCode);
+        if (isValid) {
+            logger.debug("Finding user by phoneNumber: {}", phoneNumber);
+            User user = userRepository.findByPhoneNumber(phoneNumber)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            user.setPhoneConfirmation(true);
+            userRepository.save(user);
+        }
     }
 
     public void changePassword(String email, ChangePasswordRequest request){
@@ -64,29 +89,9 @@ public class UserService {
               userRepository.save(user);
     }
 
-    public void confirmEmail(String email, String confirmationCode){
-            User user = getUserByEmail(email);
 
-            if(user.getConfirmationCode().equals(confirmationCode)){
-                user.setEmailConfirmation(true);
-                user.setConfirmationCode(null);
-                userRepository.save(user);
-            }
-            else{
-                throw new InvalidConfirmationCodeException("confirmation code is incorrect");
-            }
-    }
 
-    public void confirmPhoneNumber(String phoneNumber, String otpCode) {
-        boolean isValid = twilioOtpService.validateOtp(phoneNumber, otpCode);
-        if (isValid) {
-            logger.debug("Finding user by phoneNumber: {}", phoneNumber);
-            User user = userRepository.findByPhoneNumber(phoneNumber)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-            user.setPhoneConfirmation(true);
-            userRepository.save(user);
-        }
-    }
+
 
 
 
