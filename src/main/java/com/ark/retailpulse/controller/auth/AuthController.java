@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/confirm-phone")
-    public ResponseEntity<?> confirmPhone(@Valid @RequestParam SmsConfirmationRequest request) {  //todo : SmsConfirmationRequest as above
+    public ResponseEntity<?> confirmPhone(@Valid @RequestBody SmsConfirmationRequest request) {  //todo : SmsConfirmationRequest as above
         authService.confirmPhone(request);
         return ResponseEntity.ok(new ApiResponse("Phone number confirmed", HttpStatus.OK.value()));
     }

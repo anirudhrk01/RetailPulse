@@ -34,11 +34,11 @@ public class AuthService {
     }
 
     public void confirmEmail(EmailConfirmationRequest request) {
-        userService.confirmEmail(request.getEmail(), request.getConfirmationCode());
+        userService.confirmEmail(request);
     }
 
     public void confirmPhone(SmsConfirmationRequest request) {    //todo:  SMSconfirmation Request as like EmailConfirmation Request  [FINISHED]
-        userService.confirmPhoneNumber(request.getPhoneNumber(), request.getOtpCode());
+        userService.confirmPhoneNumber(request);
     }
 
     public void login(LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {

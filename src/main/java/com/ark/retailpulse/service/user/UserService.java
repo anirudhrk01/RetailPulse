@@ -1,6 +1,8 @@
 package com.ark.retailpulse.service.user;
 
 import com.ark.retailpulse.dto.auth.ChangePasswordRequest;
+import com.ark.retailpulse.dto.auth.EmailConfirmationRequest;
+import com.ark.retailpulse.dto.auth.SmsConfirmationRequest;
 import com.ark.retailpulse.exception.InvalidConfirmationCodeException;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.model.User;
@@ -54,7 +56,10 @@ public class UserService {
             return userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User not found"));
     }
 
-    public void confirmEmail(String email, String confirmationCode){
+    public void confirmEmail(EmailConfirmationRequest request){
+        String email = request.getEmail();
+        String confirmationCode = request.getConfirmationCode();
+
         User user = getUserByEmail(email);
 
         if(user.getConfirmationCode().equals(confirmationCode)){
@@ -63,19 +68,25 @@ public class UserService {
             userRepository.save(user);
         }
         else{
-            throw new InvalidConfirmationCodeException("confirmation code is incorrect");
+            throw new InvalidConfirmationCodeException("email confirmation code is incorrect");
         }
     }
 
-    public void confirmPhoneNumber(String phoneNumber, String confirmationCode) {
-        boolean isValid = twilioOtpService.validateOtp(phoneNumber, confirmationCode);
+    public void confirmPhoneNumber(SmsConfirmationRequest request) {
+        String phoneNumber = request.getPhoneNumber();
+        String otpCode = request.getOtpCode();
+
+        boolean isValid = twilioOtpService.validateOtp(phoneNumber, otpCode);
         if (isValid) {
             logger.debug("Finding user by phoneNumber: {}", phoneNumber);
             User user = userRepository.findByPhoneNumber(phoneNumber)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found"));
             user.setPhoneConfirmation(true);
             userRepository.save(user);
+        }else {
+            throw new InvalidConfirmationCodeException("Invalid sms OTP code");
         }
+
     }
 
     public void changePassword(String email, ChangePasswordRequest request){

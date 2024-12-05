@@ -48,11 +48,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id){
         return ResponseEntity.ok(productService.getProduct(id));
     }
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<ProductListDTO>> getAllProducts(@PageableDefault(size =10 ) Pageable pageable) {
         return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
