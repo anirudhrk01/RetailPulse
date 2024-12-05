@@ -47,7 +47,7 @@ public class UserService {
 
          User savedUser = userRepository.save(user);
          twilioOtpService.sendOtp(savedUser);
-        //todo: if user failed to confirm either EMAIL or SMS , need to delete user from repo after 15 mins
+        //todo: if user failed to confirm either EMAIL or SMS , need to delete user from repo after 10 mins
          return savedUser;
     }
 
