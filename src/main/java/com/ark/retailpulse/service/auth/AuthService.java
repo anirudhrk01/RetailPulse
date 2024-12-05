@@ -26,7 +26,7 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final TwilioOtpService twilioOtpService;// TODO: Implement OTP-related functionality
+    private final TwilioOtpService twilioOtpService;  // TODO: Implement OTP-related functionality
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public User register(User user) {

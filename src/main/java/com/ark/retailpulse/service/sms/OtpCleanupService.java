@@ -13,9 +13,12 @@ import java.time.LocalDateTime;
 public class OtpCleanupService {
 
     private final OtpRepository otpRepository;
+
     @Transactional
     @Scheduled(fixedRate = 60000)
     public void cleanupExpiredOtps() {
         otpRepository.deleteAllByExpirationTimeBefore(LocalDateTime.now());
     }
+
+
 }
