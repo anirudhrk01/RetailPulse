@@ -14,7 +14,7 @@ public class OtpCleanupService {
 
     private final OtpRepository otpRepository;
     @Transactional
-    @Scheduled(fixedRate = 60000) // Run every 1 minute
+    @Scheduled(fixedRate = 60000)
     public void cleanupExpiredOtps() {
         otpRepository.deleteAllByExpirationTimeBefore(LocalDateTime.now());
     }
