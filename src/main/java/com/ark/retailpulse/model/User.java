@@ -44,7 +44,7 @@ public class User implements UserDetails {
     private String phoneNumber;
 
     private boolean emailConfirmation=false;
-    private Boolean phoneConfirmation = false;
+    private boolean phoneConfirmation = false;
     private String confirmationCode;
 
     @Override
