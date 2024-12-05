@@ -17,10 +17,17 @@ public class Otp {
     private Long id;
 
     private String phoneNumber;
+    private String email;
 
-    private String otpCode;
 
-    private LocalDateTime expirationTime;
+    private String smsOtpCode;
+    private String emailOtpCode;
+
+    private boolean emailConfirmation = false;
+    private boolean phoneConfirmation = false;
+
+    private LocalDateTime smsOtpExpirationTime ;
+    private LocalDateTime emailOtpExpirationTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

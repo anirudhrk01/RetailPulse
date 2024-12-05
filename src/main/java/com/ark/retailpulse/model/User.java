@@ -1,7 +1,6 @@
 package com.ark.retailpulse.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -43,9 +42,8 @@ public class User implements UserDetails {
     @Pattern( regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Phone number must be valid (e.g., +1234567890 or 1234567890)")
     private String phoneNumber;
 
-    private boolean emailConfirmation=false;
-    private boolean phoneConfirmation = false;
-    private String confirmationCode;
+    private boolean enabled;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,10 +70,8 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return emailConfirmation || phoneConfirmation;
-    }
+
+
 
     public enum Role{
         USER, ADMIN
