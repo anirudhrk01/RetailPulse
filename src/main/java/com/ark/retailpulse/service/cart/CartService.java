@@ -11,6 +11,7 @@ import com.ark.retailpulse.model.User;
 import com.ark.retailpulse.repository.CartRepository;
 import com.ark.retailpulse.repository.ProductRepository;
 import com.ark.retailpulse.repository.UserRepository;
+import com.ark.retailpulse.response.CartDtoDetails.CartDtoDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +27,16 @@ public class CartService {
     private final UserRepository userRepository;
     private final CartMapper cartMapper;
 
-    public CartDTO addToCart(Long userId, Long productId, Integer quantity) {
+    public CartDtoDetails addToCart(Long userId, Long productId, Integer quantity) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new ResourceNotFoundException("User not found"));
 
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
+        if (product.getPrice() == null) {
+            throw new IllegalStateException("Product price is not set");
+        }
 
         if(product.getQuantity()<quantity){
             throw new InsufficientStockException("Quantity exceeds available stock quantity");
@@ -54,13 +59,17 @@ public class CartService {
             cart.getItems().add(cartItem);
         }
         Cart savedCart = cartRepository.save(cart);
-        return cartMapper.toDTO(savedCart);
+       CartDtoDetails cartDtoDetails= cartMapper.toDtoDetails(savedCart);
+       cartDtoDetails.setUserId(user.getId());
+        return cartDtoDetails;
     }
 
-    public CartDTO getCart(Long userId){
+    public CartDtoDetails getCart(Long userId){
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(()-> new ResourceNotFoundException("Cart not found"));
-        return cartMapper.toDTO(cart);
+        CartDtoDetails cartDtoDetails=cartMapper.toDtoDetails(cart);
+        cartDtoDetails.setUserId(cart.getUser().getId());
+        return cartDtoDetails;
     }
 
     public void clearCart(Long userId){

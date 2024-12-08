@@ -2,6 +2,7 @@ package com.ark.retailpulse.controller.order;
 
 import com.ark.retailpulse.dto.cart.CartDTO;
 import com.ark.retailpulse.model.User;
+import com.ark.retailpulse.response.CartDtoDetails.CartDtoDetails;
 import com.ark.retailpulse.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CartController {
 
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CartDTO> addToCart(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<CartDtoDetails> addToCart(@AuthenticationPrincipal UserDetails userDetails,
                                              @RequestParam Long productId,
                                              @RequestParam Integer quantity){
         Long userId = ((User) userDetails ).getId();
@@ -28,7 +29,7 @@ public class CartController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CartDTO> getCart(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<CartDtoDetails> getCart(@AuthenticationPrincipal UserDetails userDetails){
         Long userId = ((User) userDetails).getId();
         return ResponseEntity.ok(cartService.getCart(userId));
     }

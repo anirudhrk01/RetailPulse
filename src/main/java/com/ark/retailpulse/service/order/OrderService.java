@@ -7,9 +7,8 @@ import com.ark.retailpulse.helper.order.OrderItemHelper;
 import com.ark.retailpulse.mapper.CartMapper;
 import com.ark.retailpulse.mapper.OrderMapper;
 import com.ark.retailpulse.model.*;
-import com.ark.retailpulse.repository.OrderRepository;
-import com.ark.retailpulse.repository.OtpRepository;
-import com.ark.retailpulse.repository.UserRepository;
+import com.ark.retailpulse.repository.*;
+import com.ark.retailpulse.response.CartDtoDetails.CartDtoDetails;
 import com.ark.retailpulse.service.cart.CartService;
 import com.ark.retailpulse.service.emaiil.EmailService;
 import com.razorpay.RazorpayException;
@@ -38,6 +37,8 @@ public class OrderService {
     private final PaymentService paymentService;
     private final OrderItemHelper orderItemHelper;
     private final OtpRepository otpRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Transactional
     public OrderDTO createOrder(Long userId, String address, String phoneNumber) throws RazorpayException {
@@ -50,13 +51,14 @@ public class OrderService {
         }
 
 
-        CartDTO cartDTO = cartService.getCart(userId);
+        CartDtoDetails cartDTO = cartService.getCart(userId);
+
 
         if (cartDTO.getItems() == null || cartDTO.getItems().isEmpty()) {
             throw new IllegalStateException("Cannot create an order with an empty cart");
         }
 
-        Cart cart = cartMapper.toEntity(cartDTO);
+        Cart cart = cartMapper.toCart(cartDTO);
 
         // Logging cart items for debugging
         cart.getItems().forEach(item -> {
@@ -96,7 +98,10 @@ public class OrderService {
         } catch (MailException e) {
             logger.error("Failed to send order confirmation for order ID {} to user {}", savedOrder.getId(), savedOrder.getUser().getEmail(), e);
         }
-
+        Cart cart1=cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        cart1.getItems().clear();
+        cartRepository.save(cart1);
+       // cartItemRepository.deleteByCartId(cart1.getId());
         return orderMapper.toDTO(order);
     }
 
