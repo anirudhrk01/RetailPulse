@@ -22,6 +22,7 @@ public class AuthController {
 
     private final AuthService authService;
 
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user) {
         User registeredUser = authService.register(user);
@@ -57,6 +58,7 @@ public class AuthController {
         authService.changePassword(changePasswordRequest);
         return ResponseEntity.ok(new ApiResponse("Password changed successfully", HttpStatus.OK.value()));
     }
+
 
 
 

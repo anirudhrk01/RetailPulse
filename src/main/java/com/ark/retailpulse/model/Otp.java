@@ -29,7 +29,10 @@ public class Otp {
     private LocalDateTime smsOtpExpirationTime ;
     private LocalDateTime emailOtpExpirationTime;
 
-    @ManyToOne
+    private int resendCount = 0; // Resend attempts counter
+    private LocalDateTime lastResendAttempt; // Timestamp for last resend attempt
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

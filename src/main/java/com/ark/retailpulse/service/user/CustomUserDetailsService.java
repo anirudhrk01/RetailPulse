@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
         boolean isEnabled = otpRepository.existsByUserIdAndEmailConfirmationTrueOrPhoneConfirmationTrue(user.getId());
-        user.setEnabled(isEnabled);
+        user.setOtpVerified(isEnabled);
 
         return user;
     }

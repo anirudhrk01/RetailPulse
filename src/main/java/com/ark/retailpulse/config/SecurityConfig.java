@@ -61,14 +61,7 @@ public class SecurityConfig {
                                 "/images/**"
                         ).permitAll()
 
-
-//                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/users/**").hasRole("USER")
-//                        .requestMatchers("/api/cart/**").hasRole("USER")
-//                        .requestMatchers("/api/products/**").hasRole("USER")
-//                        .requestMatchers("/api/orders/**").hasRole("USER")
-//                        .requestMatchers("/api/payment/**").hasRole("USER")
-
+                        .requestMatchers("/api/user/resend-otp").permitAll()
                         .requestMatchers("/api/users/**", "/api/cart/**", "/api/products/**", "/api/orders/**", "/api/payment/**")
                         .hasAnyRole("USER", "ADMIN")
 
