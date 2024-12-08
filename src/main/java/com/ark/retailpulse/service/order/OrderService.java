@@ -6,11 +6,9 @@ import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.helper.order.OrderItemHelper;
 import com.ark.retailpulse.mapper.CartMapper;
 import com.ark.retailpulse.mapper.OrderMapper;
-import com.ark.retailpulse.model.Cart;
-import com.ark.retailpulse.model.Order;
-import com.ark.retailpulse.model.OrderItem;
-import com.ark.retailpulse.model.User;
+import com.ark.retailpulse.model.*;
 import com.ark.retailpulse.repository.OrderRepository;
+import com.ark.retailpulse.repository.OtpRepository;
 import com.ark.retailpulse.repository.UserRepository;
 import com.ark.retailpulse.service.cart.CartService;
 import com.ark.retailpulse.service.emaiil.EmailService;
@@ -39,22 +37,27 @@ public class OrderService {
     private final CartMapper cartMapper;
     private final PaymentService paymentService;
     private final OrderItemHelper orderItemHelper;
+    private final OtpRepository otpRepository;
 
     @Transactional
     public OrderDTO createOrder(Long userId, String address, String phoneNumber) throws RazorpayException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (!user.isEmailConfirmation()) {
-            throw new IllegalStateException("Email not confirmed. Please confirm your email.");
+        // Check if OTP is verified for the user
+        if (!user.isOtpVerified()) {
+            throw new IllegalStateException("OTP not verified for the user. Please verify OTP first.");
         }
+
 
         CartDTO cartDTO = cartService.getCart(userId);
-        Cart cart = cartMapper.toEntity(cartDTO);
 
-        if (cart.getItems().isEmpty()) {
+        if (cartDTO.getItems() == null || cartDTO.getItems().isEmpty()) {
             throw new IllegalStateException("Cannot create an order with an empty cart");
         }
+
+        Cart cart = cartMapper.toEntity(cartDTO);
+
         // Logging cart items for debugging
         cart.getItems().forEach(item -> {
             logger.info("CartItem: {} - Product: {} - Price: {}", item, item.getProduct(),
