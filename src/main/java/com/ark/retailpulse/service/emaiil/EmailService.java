@@ -4,7 +4,10 @@ import com.ark.retailpulse.model.Order;
 import com.ark.retailpulse.model.Otp;
 import com.ark.retailpulse.model.User;
 import com.ark.retailpulse.repository.OtpRepository;
+import com.ark.retailpulse.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailService {
     private final JavaMailSender mailSender;
-
+    private final Logger logger = LoggerFactory.getLogger(EmailService.class);
     private final OtpRepository otpRepository;
 
 
@@ -27,7 +30,8 @@ public class EmailService {
         message.setTo(order.getUser().getEmail());
         message.setSubject("Order confirmation");
         message.setText("Your order has been confirmed. Order ID " + order.getId());
-        mailSender.send(message);
+//        mailSender.send(message);
+        logger.info("Order confirmation sent to " + order.getUser().getEmail());
     }
 
     public void sendEmailConfirmationCode(User user){
@@ -42,6 +46,7 @@ public class EmailService {
         message.setText("Please confirm your email by entering this security code " + otp.getEmailOtpCode());
 //        todo: uncomment below line while demo
 //        mailSender.send(message);
+        logger.info("Confirm your email sent to " + user.getEmail());
 
     }
 

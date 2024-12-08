@@ -5,6 +5,8 @@ import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class PaymentService {
 
     @Value("${razorpay.key.id}")
     private String KEY_ID;
-
+    private final Logger logger = LoggerFactory.getLogger(PaymentService.class);
     @Value("${razorpay.secret.key}")
     private String SECRET_KEY;
 
@@ -36,6 +38,7 @@ public class PaymentService {
         orderRequest.put("currency", "INR");
         orderRequest.put("receipt", receipt);
         orderRequest.put("payment_capture", 1);
+        logger.info("Payment request: " + orderRequest.toString());
         return getRazorpayClient().orders.create(orderRequest);
     }
 

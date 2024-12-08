@@ -58,7 +58,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/",
                                 "/index.html",
-                                "/images/**"
+                                "/images/**",
+                                "/api/verify-payment"
                         ).permitAll()
 
                         .requestMatchers("/api/user/resend-otp").permitAll()
