@@ -2,6 +2,7 @@ package com.ark.retailpulse.service.product;
 
 import com.ark.retailpulse.dto.product.ProductDTO;
 import com.ark.retailpulse.dto.product.ProductListDTO;
+import com.ark.retailpulse.exception.ProductNotFound;
 import com.ark.retailpulse.exception.ResourceNotFoundException;
 import com.ark.retailpulse.mapper.ProductMapper;
 import com.ark.retailpulse.model.Product;
@@ -59,14 +60,14 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id){
         if(!productRepository.existsById(id)){
-            throw new ResourceNotFoundException("Product not found");
+            throw new ProductNotFound("Product not found");
         }
         productRepository.deleteById(id);
     }
 
     public ProductDTO getProduct(Long id){
         Product product = productRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
+                .orElseThrow(()-> new ProductNotFound("Product not found"));
         return productMapper.toDTO(product);
     }
 
