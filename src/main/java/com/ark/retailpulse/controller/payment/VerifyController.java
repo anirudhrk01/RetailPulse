@@ -24,7 +24,6 @@ public class VerifyController {
 
     @PostMapping("/verify-payment")
     public ResponseEntity<String> handlePaymentWebhook(HttpServletRequest request, @RequestBody Map<String, Object> webhookData) {
-        System.out.println("==========verification=============");
         try {
             // to-do : signature verification
             String event = (String) webhookData.get("event");
