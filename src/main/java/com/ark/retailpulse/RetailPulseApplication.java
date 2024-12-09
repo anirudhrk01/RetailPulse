@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EntityScan(basePackages = "com.ark.retailpulse.model")
-@EnableJpaRepositories(basePackages="com.ark.retailpulse.repository")
 @EnableScheduling
 public class RetailPulseApplication {
 
