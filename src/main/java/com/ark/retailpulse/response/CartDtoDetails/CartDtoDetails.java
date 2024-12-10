@@ -1,6 +1,5 @@
 package com.ark.retailpulse.response.CartDtoDetails;
 
-import com.ark.retailpulse.dto.cart.CartItemDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +7,6 @@ import java.util.List;
 @Data
 public class CartDtoDetails {
     private Long id;
-    private Long userId; //usedId
+    private Long userId; 
     private List<CartItemsDetails> items;
 }
