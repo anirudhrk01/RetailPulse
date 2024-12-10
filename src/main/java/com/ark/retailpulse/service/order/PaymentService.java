@@ -24,23 +24,51 @@ public class PaymentService {
 
 
     private RazorpayClient razorpayClient;
-
+    /**
+     * Lazily initializes and returns the RazorpayClient instance.
+     *
+     * @return RazorpayClient
+     * @throws RazorpayException if initialization fails
+     */
     private RazorpayClient getRazorpayClient() throws RazorpayException {
         if (razorpayClient == null) {
             razorpayClient = new RazorpayClient(KEY_ID, SECRET_KEY);
         }
         return razorpayClient;
     }
-
+    /**
+     * Creates a Razorpay order with the specified amount and receipt.
+     *
+     * @param amount  the order amount
+     * @param receipt the receipt ID
+     * @return Razorpay Order object
+     * @throws RazorpayException if the order creation fails
+     */
     public com.razorpay.Order createRazorpayOrder(BigDecimal amount, String receipt) throws RazorpayException {
         JSONObject orderRequest = new JSONObject();
-        orderRequest.put("amount", amount.multiply(BigDecimal.valueOf(100)).intValue()); // Amount in paise
+        orderRequest.put("amount", amount.multiply(BigDecimal.valueOf(100)).intValue()); // // Convert amount to paise
         orderRequest.put("currency", "INR");
         orderRequest.put("receipt", receipt);
         orderRequest.put("payment_capture", 1);
         logger.info("Payment request: " + orderRequest.toString());
-        return getRazorpayClient().orders.create(orderRequest);
+
+        try {
+            return getRazorpayClient().orders.create(orderRequest);
+        } catch (RazorpayException e) {
+            logger.error("Failed to create Razorpay order: {}", e.getMessage());
+            throw new RazorpayException("Failed to create Razorpay order", e);
+        }
     }
+
+    /**
+     * Verifies the payment signature using Razorpay's Utils.
+     *
+     * @param orderId   the order ID
+     * @param paymentId the payment ID
+     * @param signature the payment signature
+     * @return true if the signature is verified
+     * @throws RazorpayException if verification fails
+     */
 
     public boolean verifyPaymentSignature(String orderId, String paymentId, String signature) {
         JSONObject params = new JSONObject();

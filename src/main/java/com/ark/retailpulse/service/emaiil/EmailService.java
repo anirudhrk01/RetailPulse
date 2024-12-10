@@ -4,7 +4,6 @@ import com.ark.retailpulse.model.Order;
 import com.ark.retailpulse.model.Otp;
 import com.ark.retailpulse.model.User;
 import com.ark.retailpulse.repository.OtpRepository;
-import com.ark.retailpulse.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +20,28 @@ public class EmailService {
     private final OtpRepository otpRepository;
 
 
-    @Value("spring.mail.username")
+    @Value("${spring.mail.username}")
     private String fromEmail;
-
+    /**
+     * Sends an order confirmation email to the user.
+     *
+     * @param order the order to confirm
+     */
     public void sendOrderConfirmation(Order order){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(order.getUser().getEmail());
         message.setSubject("Order confirmation");
         message.setText("Your order has been confirmed. Order ID " + order.getId());
+//        todo: uncomment below line while demo
 //        mailSender.send(message);
         logger.info("Order confirmation sent to " + order.getUser().getEmail());
     }
-
+    /**
+     * Sends an email confirmation code to the user.
+     *
+     * @param user the user to send the confirmation code to
+     */
     public void sendEmailConfirmationCode(User user){
 
         Otp otp = otpRepository.findByUserId(user.getId())
@@ -49,11 +57,6 @@ public class EmailService {
         logger.info("Confirm your email sent to " + user.getEmail());
 
     }
-
-    public void sendOrderFailureNotification(Order order) { //todo: order confirmation
-        // Logic for sending a failure notification email
-    }
-
 
 
 }

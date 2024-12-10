@@ -13,7 +13,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("RetailPulse")
                         .version("1.0")
-                        .description("RetailPulse API with session-based authentication, including logout functionality")
+                        .description("complete ecommerce platform")
                 );
     }
 }
