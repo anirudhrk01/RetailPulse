@@ -87,7 +87,6 @@ public class ProductController {
      * @return the product details
      */
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
         logger.info("Fetching product with ID: {}", id);
         return ResponseEntity.ok(productService.getProduct(id));
@@ -101,7 +100,6 @@ public class ProductController {
      * @return a paginated list of product summaries
      */
     @GetMapping
-    @PreAuthorize("permitAll()")
     public ResponseEntity<Page<ProductListDTO>> getAllProducts(@PageableDefault(size = 10) Pageable pageable) {
         logger.info("Fetching all products with pagination: page size = {}", pageable.getPageSize());
         return ResponseEntity.ok(productService.getAllProducts(pageable));
