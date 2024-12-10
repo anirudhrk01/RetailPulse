@@ -3,6 +3,9 @@ package com.ark.retailpulse.dto.auth;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+/**
+ * DTO for handling change password requests.
+ */
 @Data
 public class ChangePasswordRequest {
 

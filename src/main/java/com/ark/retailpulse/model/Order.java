@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a customer's order in the system.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,6 +22,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    /**
+     * The user who placed the order.
+     */
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -30,6 +36,9 @@ public class Order {
         PREPARING, DELIVERING, DELIVERED, CANCELED
     }
     private LocalDateTime createdAt;
+    /**
+     * List of items associated with the order.
+     */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 

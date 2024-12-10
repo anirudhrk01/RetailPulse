@@ -32,13 +32,19 @@ public class TwilioOtpService {
     @Value("${twilio.phoneNumber}")
     private String fromPhoneNumber;
 
+    // Initializes Twilio with account SID and auth token
     @PostConstruct
     public void init() {
         Twilio.init(accountSid, authToken);
     }
 
+    /**
+     * Method to send an OTP via Twilio.
+     * @param otp The OTP object containing details such as phone number and OTP code.
+     */
     public void sendOtp(Otp otp) {
         try {
+            // Save the OTP object to the repository
             otpRepository.save(otp);
 //             todo: Uncomment for sending sms otp
 //             Message.creator(

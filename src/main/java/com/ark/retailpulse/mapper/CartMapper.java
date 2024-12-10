@@ -15,11 +15,9 @@ public interface CartMapper {
     CartDTO toDTO(Cart Cart);
     @Mapping(target="user.id", source = "userId")
     Cart toEntity(CartDTO cartDTO);
-
-//    @Mapping(target="productId", source="product.id")
+    
     CartItemDTO toDTO(CartItem cartItem);
 
-//    @Mapping(target="product.id", source="productId")
     CartItem toEntity(CartItemDTO cartItemDTO);
 
     CartDtoDetails toDtoDetails(Cart cart);

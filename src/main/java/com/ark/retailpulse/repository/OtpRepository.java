@@ -13,15 +13,9 @@ public interface OtpRepository extends JpaRepository<Otp, Long> {
 
     void deleteAllBySmsOtpExpirationTimeBefore(LocalDateTime time);
     void deleteAllByEmailOtpExpirationTimeBefore(LocalDateTime time);
-
     boolean existsByUserIdAndEmailConfirmationTrueOrPhoneConfirmationTrue(Long id);
-
     Optional<Otp> findByUserId(Long id);
     Optional<Otp> findByEmail(String email);
 
-
-    Optional<Otp> findByEmailAndEmailOtpCode(String email, String confirmationCode);
-
-    Optional<Otp> findByPhoneNumberAndSmsOtpCode(String phoneNumber, String otpCode);
 
 }
