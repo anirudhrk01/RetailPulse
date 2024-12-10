@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+/**
+ * DTO for handling SMS confirmation requests.
+ */
 @Data
 public class SmsConfirmationRequest {
 

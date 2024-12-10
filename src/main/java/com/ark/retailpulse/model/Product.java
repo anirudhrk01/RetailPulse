@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Represents a product entity in the system.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -23,7 +25,9 @@ public class Product implements Serializable {
     private BigDecimal price;
     private Integer quantity;
     private String image; //add image
-
+    /**
+     * List of comments associated with the product.
+     */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 

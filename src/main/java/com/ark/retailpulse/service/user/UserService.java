@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Service class responsible for user registration, password management,
+ * OTP confirmation, and email/phone number verification.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -37,6 +41,13 @@ public class UserService {
     private static final int MAX_RESEND_COUNT = 3;
     private static final int RESEND_LIMIT_WINDOW_MINUTES = 15;
 
+    /**
+     * Registers a new user by validating uniqueness of email and phone number,
+     * encoding the password, generating OTP, and sending confirmation emails/SMS.
+     *
+     * @param user the user to be registered
+     * @return the saved user
+     */
     public User registerUser(User user) {
         validateUserDoesNotExist(user.getEmail(), user.getPhoneNumber());
 
@@ -50,6 +61,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Confirms the email of the user by validating the OTP confirmation code.
+     *
+     * @param request the request containing email and confirmation code
+     */
     public void confirmEmail(EmailConfirmationRequest request) {
         Otp otp = findOtpByEmail(request.getEmail());
 
@@ -61,6 +77,11 @@ public class UserService {
         updateUserOtpVerification(otp.getUser().getId());
     }
 
+    /**
+     * Confirms the phone number of the user by validating the OTP confirmation code.
+     *
+     * @param request the request containing phone number and OTP code
+     */
     public void confirmPhoneNumber(SmsConfirmationRequest request) {
         Otp otp = findOtpByPhoneNumber(request.getPhoneNumber());
 
@@ -72,7 +93,12 @@ public class UserService {
         updateUserOtpVerification(otp.getUser().getId());
     }
 
-
+    /**
+     * Changes the user's password after validating the current password.
+     *
+     * @param email  the email of the user whose password needs to be changed
+     * @param request the request containing the current and new password
+     */
     public void changePassword(String email, ChangePasswordRequest request) {
         User user = findUserByEmail(email);
 
@@ -84,12 +110,24 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Validates if the user with the given email or phone number already exists.
+     *
+     * @param email the email of the user
+     * @param phoneNumber the phone number of the user
+     */
     private void validateUserDoesNotExist(String email, String phoneNumber) {
         if (userRepository.existsByEmail(email) || userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new IllegalArgumentException("User with email or phone number already exists.");
         }
     }
 
+    /**
+     * Generates and saves OTP codes for email and phone number confirmation.
+     *
+     * @param user the user for whom OTP is being generated
+     * @return the saved OTP entity
+     */
     private Otp generateAndSaveOtp(User user) {
         String smsCode = codeGeneratorUtil.generateConfirmationCode();
         String emailCode = codeGeneratorUtil.generateConfirmationCode();
@@ -106,36 +144,83 @@ public class UserService {
         return otpRepository.save(otp);
     }
 
+    /**
+     * Finds a user by their email address.
+     *
+     * @param email the email of the user
+     * @return an Optional containing the user if found, otherwise empty
+     */
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
+    /**
+     * Finds a user by their email address and throws an exception if not found.
+     *
+     * @param email the email of the user
+     * @return the user
+     * @throws ResourceNotFoundException if the user is not found
+     */
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for the given email."));
     }
 
+    /**
+     * Finds a user by their phone number and throws an exception if not found.
+     *
+     * @param phoneNumber the phone number of the user
+     * @return the user
+     * @throws ResourceNotFoundException if the user is not found
+     */
     private User findUserByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for the given phone number."));
     }
 
+    /**
+     * Finds an OTP record by email address.
+     *
+     * @param email the email of the user
+     * @return the OTP record
+     * @throws ResourceNotFoundException if OTP is not found
+     */
     private Otp findOtpByEmail(String email) {
         return otpRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("No OTP found for the given email."));
     }
 
+    /**
+     * Finds an OTP record by phone number.
+     *
+     * @param phoneNumber the phone number of the user
+     * @return the OTP record
+     * @throws ResourceNotFoundException if OTP is not found
+     */
     private Otp findOtpByPhoneNumber(String phoneNumber) {
         return otpRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("No OTP found for the given phone number."));
     }
 
+    /**
+     * Validates the provided OTP against the stored OTP and checks expiration time.
+     *
+     * @param actualCode the actual OTP code
+     * @param providedCode the provided OTP code
+     * @param expirationTime the expiration time of the OTP
+     * @throws InvalidConfirmationCodeException if the code is invalid or expired
+     */
     private void validateOtp(String actualCode, String providedCode, LocalDateTime expirationTime) {
         if (!actualCode.equals(providedCode) || expirationTime.isBefore(LocalDateTime.now())) {
             throw new InvalidConfirmationCodeException("Invalid or expired confirmation code.");
         }
     }
 
+    /**
+     * Updates the user's OTP verification status after email or phone number confirmation.
+     *
+     * @param userId the ID of the user
+     */
     private void updateUserOtpVerification(Long userId) {
         Otp otp = otpRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Otp not found for user ID: " + userId));
@@ -149,6 +234,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Resends the OTP to the user via either SMS or email, implementing rate-limiting.
+     *
+     * @param identifier the email or phone number to identify the user
+     * @param isPhoneOtp true if the OTP is for phone number, false for email
+     * @throws IllegalStateException if the resend limit is exceeded
+     */
     public void resendOtp(String identifier, boolean isPhoneOtp) {
 
         // Find the OTP by email or phone number

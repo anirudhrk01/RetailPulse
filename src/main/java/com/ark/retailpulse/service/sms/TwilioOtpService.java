@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import jakarta.annotation.PostConstruct;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -34,15 +32,21 @@ public class TwilioOtpService {
     @Value("${twilio.phoneNumber}")
     private String fromPhoneNumber;
 
+    // Initializes Twilio with account SID and auth token
     @PostConstruct
     public void init() {
         Twilio.init(accountSid, authToken);
     }
 
+    /**
+     * Method to send an OTP via Twilio.
+     * @param otp The OTP object containing details such as phone number and OTP code.
+     */
     public void sendOtp(Otp otp) {
         try {
+            // Save the OTP object to the repository
             otpRepository.save(otp);
-//             todo: 0Uncomment for sending
+//             todo: Uncomment for sending sms otp
 //             Message.creator(
 //                 new PhoneNumber(otp.getPhoneNumber()),
 //                 new PhoneNumber(fromPhoneNumber),
@@ -56,17 +60,4 @@ public class TwilioOtpService {
         }
     }
 
-//    todo: add if confirmed delete from otp from  otp table
-//    public boolean validateOtp(String phoneNumber, String otpCode) {
-//        Otp otp = otpRepository.findByPhoneNumberAndSmsOtpCode(phoneNumber, otpCode)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid OTP"));
-//
-//        if (otp.getSmsOtpExpirationTime().isBefore(LocalDateTime.now())) {
-//            otpRepository.delete(otp);
-//            throw new IllegalArgumentException("OTP has expired");
-//        }
-//
-//        otpRepository.delete(otp); // Cleanup after validation
-//        return true;
-//    }
 }

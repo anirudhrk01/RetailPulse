@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+/**
+ * Represents an OTP (One-Time Password) entity for email and phone verification.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -29,9 +31,11 @@ public class Otp {
     private LocalDateTime smsOtpExpirationTime ;
     private LocalDateTime emailOtpExpirationTime;
 
-    private int resendCount = 0; // Resend attempts counter
-    private LocalDateTime lastResendAttempt; // Timestamp for last resend attempt
-
+    private int resendCount = 0;
+    private LocalDateTime lastResendAttempt;
+    /**
+     * The user associated with this OTP record.
+     */
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
