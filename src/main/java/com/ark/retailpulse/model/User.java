@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Represents a user in the system.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -36,7 +39,9 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    /**
+     * Cart associated with the user.
+     */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
